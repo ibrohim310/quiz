@@ -1,0 +1,142 @@
+{%extends 'base.html'%}
+  {%block content%}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-xl-3"></div>
+            <div class="card col-xl-6 col-lg-6 " id="sample-login">
+                <form method = 'post'> {%csrf_token%}
+                <div class="card-header justify-content-center d-flex">
+                    <h4>Question</h4>
+                </div>
+                <div class="card-body pb-0">
+                    <div class="form-group">
+                    <label>write down a question</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <i class="fa-solid fa-question"></i>
+                        </div>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Quiz name" name = 'title'>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <h6 style="text-align: center;">write down correct answers</h6>
+                        <label for="#">give a correct answer for that field, and we randomly place the answer for each test takers.</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Correct answer for the question " name="correct">
+                        </div>
+                    </div>
+                    <br>
+                    <!--<div class="form-group">
+                        <h6 style="text-align: center;">Give 3 wrong answers</h6>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="1st Wrong answer for the question " name = 'incorrect1'>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="2nd Wrong answer for the question " name="incorrect2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </div>
+                            </div>
+                            <input type="text" class="form-control" placeholder="3rd Wrong answer for the question " name = 'incorrect3'>
+                        </div>
+                    </div>-->
+                    <div id="incorrectAnswers">
+                        <h6 style="text-align: center;">Give wrong answers</h6>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fa-regular fa-circle-xmark"></i>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Wrong answer for the question" name="incorrect1">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary mr-2" onclick="addIncorrectAnswerInput()">Add Incorrect Answer</button>
+                    <button type="button" class="btn btn-danger" onclick="removeIncorrectAnswerInput()">Remove Last Answer</button>
+                    
+                    <script>
+                        let maxIncorrectCount = 10; // Har bir savol uchun maksimal xato variantlar soni
+                        let currentIncorrectCount = 1; // Hozirgi qo'shilgan xato variantlar soni
+                    
+                        function addIncorrectAnswerInput() {
+                            if (currentIncorrectCount < maxIncorrectCount) {
+                                currentIncorrectCount++;
+                                let newInput = document.createElement('div');
+                                newInput.classList.add('form-group');
+                                newInput.innerHTML = `
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                <i class="fa-regular fa-circle-xmark"></i>
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Wrong answer for the question" name="incorrect${currentIncorrectCount}">
+                                    </div>
+                                `;
+                                document.getElementById('incorrectAnswers').appendChild(newInput);
+                            } else {
+                                alert("You've reached the maximum number of incorrect answers.");
+                                document.querySelector('button.btn.btn-primary').disabled = true; // Disable the button after reaching max count
+                            }
+                        }
+                    
+                        function removeIncorrectAnswerInput() {
+                            if (currentIncorrectCount > 1) {
+                                let lastIncorrectInput = document.querySelector(`#incorrectAnswers .form-group:nth-child(${currentIncorrectCount})`);
+                                lastIncorrectInput.remove();
+                                currentIncorrectCount--;
+                                document.querySelector('button.btn.btn-primary').disabled = false; // Enable the add button after removing an answer
+                            }
+                        }
+                    </script>
+                    
+                    
+                    
+                    
+                    <div class="form-group mb-0">
+                    </div>
+                    <div class="card-footer  justify-content-left d-flex">
+                        <div class="col-6">
+                            <button  type="submit" name="submit_action" value="exit" class="btn btn-danger">Save & Exit</button>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" name="submit_action" value="save_again" class="btn btn-primary">Save & add question</button>
+                        </div>
+                    </div>
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+
+  {%endblock%}
