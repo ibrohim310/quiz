@@ -3,6 +3,8 @@ from .models import *
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+import csv
+from django.http import HttpResponse
 
 # Create your views here.
 @login_required(login_url = 'dash:login')
@@ -150,6 +152,36 @@ def quiz_delete(request, id):
     Quiz.objects.get(id = id).delete()
     return redirect('dash:main')
 
+
+
+@login_required(login_url = 'dash:login')
+def get_results(request, id):
+    quiz = Quiz.objects.get(id=id)
+    taker = QuizTaker.objects.filter(quiz=quiz)
+
+    # results = []
+    # for i in taker:
+    #     results.append(Result.objects.get(taker=i))
+    
+    results = tuple(
+            map(
+            lambda x : Result.objects.get(taker=x),
+            taker
+        )
+    )
+    return render(request, 'quiz/results.html', {'results':results})
+
+def result_detail(request, id):
+    result = Result.objects.get(id=id)
+    answers = Answer.objects.filter(taker=result.taker)
+    context = {
+        'taker':result.taker,
+        'answers':answers
+    }
+    return render(request, 'quiz/result-detail.html', context)
+
+
+
 #login
 
 
@@ -182,3 +214,29 @@ def register(request):
         else:
             status  = f'the username {username} is occupied'
     return render(request, 'auth/register.html', {'status': status})
+
+
+#export excel
+
+
+def export_results(request):
+    results = Result.objects.all()
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="quiz_results.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['FIO', 'Telefon', 'Email', 'Jami savollar', 'Togri javoblar', 'Notogri javoblar', 'Foiz'])
+
+    for result in results:
+        writer.writerow([
+            result.taker.full_name,
+            result.taker.phone,
+            result.taker.email,
+            result.questions,
+            result.correct_answers,
+            result.incorrect_answers,
+            result.percentage
+        ])
+
+    return response

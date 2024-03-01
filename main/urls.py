@@ -12,7 +12,11 @@ urlpatterns = [
     path('questions/<int:id>', views.questions_list, name = 'questions'),
     path('question-detail/<int:id>', views.quest_detail, name = 'quest_detail'),
     path('quiz-delete/<int:id>', views.quiz_delete , name ='quiz_delete' ),
+    path('get-results/<int:id>', views.get_results , name ='get_results' ),
+    path('result-detail/<int:id>', views.result_detail , name ='result_detail' ),
     #auth
     path('login', views.logging_in, name = 'login'),
     path('register', views.register, name = 'register'),
+    #export
+    path('export/', views.export_results, name='export-results'),
 ]

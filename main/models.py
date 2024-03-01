@@ -57,7 +57,7 @@ class Option(models.Model):
         super(Option, self).save(*args, **kwargs)
     
     def __str__(self) -> str:
-        return f"{self.question.title} -- {self.name}"
+        return f"{self.question.title} = {self.name}"
 
 
 class QuizTaker(models.Model):
@@ -72,6 +72,10 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Option, on_delete=models.CASCADE)
     is_correct = models.BooleanField()
+
+    def save(self, *args, **kwargs):
+        self.is_correct = self.answer == self.question.correct_answer
+        super(Answer, self).save(*args, **kwargs)
 
 
 class Result(models.Model):

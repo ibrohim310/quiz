@@ -3,31 +3,47 @@
       <!-- Main Content -->
 
         <section class="section" >
-          
+          <form method="post" action="{% url 'dash:export-results' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-success">Export to Excel</button>
+          </form>
+
           <div class="row d-flex justify-content-center">
             <h1 class="col-12" style="text-align: center;">All quizes you've created</h1>
-          {% for quiz in quizes %}
+
+          
+          {% for result in results %}
          
           <div class="card card-danger col-5 m-2">
             <div class="card-header">
-              <h4>{{quiz.title}}</h4>
+              <h4>{{result.taker.full_name}}</h4>
               <div class="card-header-action">
-                <a href="{%url 'dash:questions' quiz.id%}" class="btn btn-primary">View the quiz</a>
-                <div class="dropdown">
-                  <a href="{%url 'dash:quiz_delete' quiz.id%}" class="btn btn-danger">Delete quiz</a>
-                </div>
+                <a href="{% url 'dash:result_detail' result.id %}" class="btn btn-primary">Get Details</a>
               </div>
             </div>
             <div class="card-body">
             </div>
-            <p>Contains {{quiz.all_questions}} question(s) overall</p>
-            <h4><a href="{% url 'front:quiz_detail' quiz.code %}">link</a>
-            <h4><a href="{% url 'dash:get_results' quiz.id %}">Results</a>
+            <p>Total questions {{result.questions}}</p>
+            <p>Correct answers {{result.correct_answers}}</p>
+            <p>In Correct answers {{result.incorrect_answers}}</p>
+            <p>Percentage {{result.percentage}} %</p>
             </div>
 
           {%endfor%}
         </div>
         </section>
+        <div class="col-lg-12 col-md-6 col-sm-12 col-xs-12 col-6" >
+          <div class="card">
+            <div class="card-header">
+              <h4>Bar CHart</h4>
+            </div>
+            <div class="card-body">
+              <div class="recent-report__chart">
+                <div id="chart1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="settingSidebar">
           <a href="javascript:void(0)" class="settingPanelToggle"> <i class="fa fa-spin fa-cog"></i>
           </a>
