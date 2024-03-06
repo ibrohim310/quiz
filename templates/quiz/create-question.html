@@ -22,6 +22,50 @@
                     </div>
                     </div>
                     <br>
+                    <button onclick="openModal()">Vaqtni Tanlash</button>
+
+                    <div id="myModal" class="modal">
+                      <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <label for="startHour">Boshlang'ich soat:</label>
+                        <input type="number" id="startHour" name="startHour" min="1" max="23" value="0">
+                        <label for="endHour">Tugash soat:</label>
+                        <input type="number" id="endHour" name="endHour" min="1" max="23" value="0">
+                        <button onclick="setTimeAndRedirect()">OK</button>
+                      </div>
+                    </div>
+                    
+                    <script>
+                    // Modal oynani ochish uchun funksiya
+                    function openModal() {
+                      var modal = document.getElementById("myModal");
+                      modal.style.display = "block";
+                    }
+                    
+                    // Modal oynani yopish uchun funksiya
+                    function closeModal() {
+                      var modal = document.getElementById("myModal");
+                      modal.style.display = "none";
+                    }
+                    
+                    // Vaqt kiritilganidan so'ng redirect qilish uchun funksiya
+                    function setTimeAndRedirect() {
+                      var quizCode = document.getElementById("quiz_code").value;
+                      var startHour = document.getElementById("startHour").value;
+                      var endHour = document.getElementById("endHour").value;
+                      
+                      var url = "/front/quiz_detail/" + quizCode + "?startHour=" + startHour + "&endHour=" + endHour;
+                      
+                      window.location.href = url;
+                      
+                      // Modal oynani yopish
+                      closeModal();
+                    }
+                    </script>
+                    
+                    
+                    
+                    
                     <div class="form-group">
                         <h6 style="text-align: center;">write down correct answers</h6>
                         <label for="#">give a correct answer for that field, and we randomly place the answer for each test takers.</label>

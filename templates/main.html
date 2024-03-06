@@ -21,7 +21,23 @@
             <div class="card-body">
             </div>
             <p>Contains {{quiz.all_questions}} question(s) overall</p>
-            <h4><a href="{% url 'front:quiz_detail' quiz.code %}">link</a>
+            <script>
+              function copyUrl() {
+                  var url = "{% url 'front:quiz_detail' quiz.code %}";
+                  // URLni olish
+                  var dummy = document.createElement("input");
+                  document.body.appendChild(dummy);
+                  dummy.setAttribute('value', url);
+                  dummy.select();
+                  document.execCommand("copy");
+                  document.body.removeChild(dummy);
+                  // Foydalanuvchiga ko'rsatish
+                  alert("URL nusxalandi: " + url);
+              }
+          </script>
+          
+          <button onclick="copyUrl()">Linkni Nusxalash</button>
+            <h4><a href="{% url 'front:quiz_detail' quiz.code %}">link</a></h4>
             <h4><a href="{% url 'dash:get_results' quiz.id %}">Results</a>
             </div>
 
