@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from main import models
 
-
 def create_result(id):
     quiz_taker = models.QuizTaker.objects.get(id=id)
     correct = 0
@@ -52,3 +51,8 @@ def create_answers(request, code):
             )
     create_result(quiz_taker.id)
     return HttpResponse('Javobingiz yozildi')
+
+
+
+
+

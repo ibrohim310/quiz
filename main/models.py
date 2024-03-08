@@ -1,8 +1,9 @@
 import random, string
 
+
 from django.db import models
 from django.contrib.auth.models import User
-
+from django_ckeditor_5.fields import CKEditor5Field
 
 class Quiz(models.Model):
     title = models.CharField(max_length=255)
@@ -92,3 +93,4 @@ class Result(models.Model):
     @property
     def percentage(self, *args, **kwargs):
         return self.correct_answers / self.questions * 100
+
