@@ -4,7 +4,11 @@ from django.urls import path
 app_name = 'api'
 
 urlpatterns = [
-    path('api/quiz-detail/<str:code>/', views.quiz_detail_api, name='quiz-detail-api'),
-    path('api/quiz/<str:code>/create-answers/', views.create_answers_api, name='create-answers-api'),
+    path('quiz/', views.quiz_list, name='quiz-list'),
+    path('question/', views.question_list, name='question-list'),
+    path('answer/', views.answer_list, name='answer-list'),
+    path('quiztaker/', views.quiztaker_list, name='quiztaker-list'),
 ]
+
+
               

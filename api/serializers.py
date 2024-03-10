@@ -1,33 +1,22 @@
 from rest_framework import serializers
 from main import models
 
-class QuestionSerializer(serializers.ModelSerializer):
-    correct_answer = serializers.SerializerMethodField()
-    options = serializers.SerializerMethodField()
-
-    class Meta:
-        model = models.Question
-        fields = ['title', 'correct_answer', 'options']
-
-    def get_correct_answer(self, question):
-        correct_answer = question.correct_answer
-        if correct_answer:
-            return correct_answer.name
-        return None
-
-    def get_options(self, question):
-        options = question.get_options()
-        return [option.name for option in options]
-
-
-class QuizDetailSerializer(serializers.ModelSerializer):
-    questions = QuestionSerializer(many=True)
+class QuizSerializer(serializers.ModelSerializer):
+    questions = serializers.SerializerMethodField()
 
     class Meta:
         model = models.Quiz
         fields = ['title', 'questions']
 
+    def get_questions(self, obj):
+        questions = models.Question.objects.filter(quiz=obj)
+        serializer = QuestionSerializer(questions, many=True)
+        return serializer.data
 
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Question
+        fields = ['title', 'correct_answer']
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,4 +29,11 @@ class QuizTakerSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.QuizTaker
         fields = ['full_name', 'phone', 'email', 'answers']
+
+
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Result
+        fields = '__all__'
 
